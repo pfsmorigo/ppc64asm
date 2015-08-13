@@ -2,6 +2,8 @@ CC = gcc
 LD = ld
 RM = -rm
 
+CFLAGS = -m64
+
 BANNER = @echo -e "\n=== $@\n"
 
 all: asm2c
