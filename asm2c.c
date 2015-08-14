@@ -3,9 +3,7 @@
 #include <stdint.h>
 #include <string.h>
 
-#define REFERENCE(x) printf(x)
 #define HEX "%32llx"
-
 #define RA r[ra]
 #define RB r[rb]
 #define RC r[rc]
@@ -25,13 +23,18 @@ void v(uint8_t vector_num, uint64_t high, uint64_t low) {
 	vr[vector_num][1] = high;
 }
 
+void instruction_info(char *desc, char *form, char *attrib, uint16_t page) {
+	printf("--------------------------------------------------------------\n");
+	printf("%s, %s-form, %s, Page %u\n", desc, form, attrib, page);
+	printf("--------------------------------------------------------------\n");
+}
+
 void neg(uint8_t rt, uint8_t ra) {
-	REFERENCE("Negate | XO-form | RT,RA | P. 70\n");
+	instruction_info("Negate", "XO", "RT,RA", 70);
 
 	printf("\n");
-	printf("---- neg(RT, RA)\n");
-	printf("         %2u  %2u\n", rt, ra);
-	printf("\n");
+	printf("neg(RT, RA)\n");
+	printf("    %2u  %2u\n", rt, ra);
 	printf(HEX"| RA (r%u)\n", RA, ra);
 	printf(HEX"| ~RA\n", ~(RA));
 	printf(HEX"| ~RA + 1 = RT (r%u)\n", ~(RA) + 1, rt);
@@ -41,12 +44,11 @@ void neg(uint8_t rt, uint8_t ra) {
 }
 
 void lvsr(uint8_t vtr, uint8_t ra, uint8_t rb) {
-	REFERENCE("Load Vector for Shift Right: VTR,RA,RB\n");
+	instruction_info("Load Vector for Shift Right", "X", "VTR,RA,RB", 186);
 
 	printf("\n");
-	printf("---- lvsr(VTR, RA, RB)\n");
-	printf("           %2u  %2u  %2u\n", vtr, ra, rb);
-	printf("\n");
+	printf("lvsr(VTR, RA, RB)\n");
+	printf("      %2u  %2u  %2u\n", vtr, ra, rb);
 
 	uint64_t b, sh;
 	uint8_t sh4;
