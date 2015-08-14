@@ -34,6 +34,7 @@ void v(uint8_t vector_num, uint64_t high, uint64_t low) {
 }
 
 void instruction_info(char *desc, char *form, char *attrib, uint16_t page) {
+	printf("\n");
 	printf("--------------------------------------------------------------\n");
 	printf("%s, %s-form, %s, Page %u\n", desc, form, attrib, page);
 	printf("--------------------------------------------------------------\n");
@@ -103,6 +104,15 @@ void neg(uint8_t rt, uint8_t ra) {
 }
 
 void vperm(uint8_t vrt, uint8_t vra, uint8_t vrb, uint8_t vrc) {
+	instruction_info("Vector Permute", "VA", "VRT,VRA,VRB,VRC", 198);
+
+	printf("\n");
+	printf("vperm(VRT, VRA, VRB, VRC)\n");
+	printf("       %2u   %2u   %2u   %2u\n", vrt, vra, vrb, vrc);
+	printf("\n");
+
+
+
 }
 
 void vspltisb(uint8_t vrt, uint8_t sim) {
@@ -142,6 +152,7 @@ void vxor(uint8_t vrt, uint8_t vra, uint8_t vrb) {
 
 	v_str(vrt);
 	printf("%s | VRT (vr%u)\n", vector_str, vrt);
+	printf("\n");
 }
 
 
@@ -159,6 +170,7 @@ int main(int argc, char **argv)
 	lvsr(5, 0, 7);
 	vspltisb(6, 15);
 	vxor(5, 5, 6);
+	vperm(9, 9, 9, 5);
 
 	return 0;
 }
