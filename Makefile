@@ -3,12 +3,13 @@ LD = ld
 RM = -rm
 
 CFLAGS = -m64
+#INCLUDES = -include pwrasm.h
 
 BANNER = @echo -e "\n=== $@\n"
 
-all: asm2c
+all: pwrasm
 
-asm2c: asm2c.o
+pwrasm: main.o helper.o instructions.o
 	$(BANNER)
 	$(CC) $(CFLAGS) $(INCLUDES) $^ -o $@
 
@@ -18,4 +19,4 @@ asm2c: asm2c.o
 
 clean:
 	$(BANNER)
-	$(RM) -f asm2c *.o
+	$(RM) -f pwrasm *.o

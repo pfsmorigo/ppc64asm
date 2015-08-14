@@ -1,47 +1,6 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <stdint.h>
-#include <string.h>
-
-#define HEX "%32llx"
-#define RA r[ra]
-#define RB r[rb]
-#define RC r[rc]
-#define RT r[rt]
-#define VRA vr[vra]
-#define VRB vr[vrb]
-#define VRC vr[vrc]
-#define VRT vr[vrt]
-
-uint64_t r[32];
-uint64_t vr[32][2];
-uint8_t vector_str[sizeof("11223344556677889900112233445566")];
-
-
-/* Helper functions -------------------------------------------------------- */
-
-void *v_str(uint8_t vector_num) {
-	if (vr[vector_num][1] == 0)
-		sprintf(vector_str, HEX, vr[vector_num][0]);
-	else
-		sprintf(vector_str, "%16llx%016llx", vr[vector_num][1],
-				vr[vector_num][0]);
-}
-
-void v(uint8_t vector_num, uint64_t high, uint64_t low) {
-	vr[vector_num][0] = low;
-	vr[vector_num][1] = high;
-}
-
-void instruction_info(char *desc, char *form, char *attrib, uint16_t page) {
-	printf("\n");
-	printf("--------------------------------------------------------------\n");
-	printf("%s, %s-form, %s, Page %u\n", desc, form, attrib, page);
-	printf("--------------------------------------------------------------\n");
-}
-
-
-/* Instructions functions -------------------------------------------------- */
+#include "pwrasm.h"
 
 void lvsr(uint8_t vrt, uint8_t ra, uint8_t rb) {
 	instruction_info("Load Vector for Shift Right", "X", "VRT,RA,RB", 186);
@@ -153,23 +112,4 @@ void vxor(uint8_t vrt, uint8_t vra, uint8_t vrb) {
 	v_str(vrt);
 	printf("%s | VRT (vr%u)\n", vector_str, vrt);
 	printf("\n");
-}
-
-
-int main(int argc, char **argv)
-{
-	r[4] = 0x3fffffffeca8;
-	v(9, 0x1100ffeeddccbbaa, 0x9988776655443322);
-
-	v_str(9);
-	printf("%s | vr%u\n", vector_str, 9);
-	printf("\n");
-
-	neg(7, 4);
-	lvsr(5, 0, 7);
-	vspltisb(6, 15);
-	vxor(5, 5, 6);
-	vperm(9, 9, 9, 5);
-
-	return 0;
 }
