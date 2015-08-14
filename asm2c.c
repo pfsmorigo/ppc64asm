@@ -123,7 +123,7 @@ void vspltisb(uint8_t vrt, uint8_t sim) {
 	printf("          %2u  0x%02x (%u)\n", vrt, sim, sim);
 
 	uint8_t i, *ptr;
-	ptr = &VRT;
+	ptr = (uint8_t *) &VRT;
 
 	for (i = 0; i < 128; i++)
 		*(ptr+i) = sim;
@@ -159,7 +159,6 @@ void vxor(uint8_t vrt, uint8_t vra, uint8_t vrb) {
 int main(int argc, char **argv)
 {
 	r[4] = 0x3fffffffeca8;
-	r[7] = 0x0;
 	v(9, 0x1100ffeeddccbbaa, 0x9988776655443322);
 
 	v_str(9);
