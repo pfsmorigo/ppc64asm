@@ -8,6 +8,10 @@
 #define RB r[rb]
 #define RC r[rc]
 #define RT r[rt]
+#define VRA vr[vra]
+#define VRB vr[vrb]
+#define VRC vr[vrc]
+#define VRT vr[vrt]
 
 uint64_t r[32];
 uint64_t vr[32][2];
@@ -98,6 +102,9 @@ void neg(uint8_t rt, uint8_t ra) {
 	RT = ~(RA) + 1;
 }
 
+void vperm(uint8_t vrt, uint8_t vra, uint8_t vrb, uint8_t vrc) {
+}
+
 void vspltisb(uint8_t vrt, uint8_t sim) {
 	instruction_info("Vector Splat Immediate Signed Byte", "VX", "VRT,SIM", 198);
 
@@ -106,7 +113,7 @@ void vspltisb(uint8_t vrt, uint8_t sim) {
 	printf("          %2u  0x%02x (%u)\n", vrt, sim, sim);
 
 	uint8_t i, *ptr;
-	ptr = &vr[vrt];
+	ptr = &VRT;
 
 	for (i = 0; i < 128; i++)
 		*(ptr+i) = sim;
@@ -117,6 +124,26 @@ void vspltisb(uint8_t vrt, uint8_t sim) {
 	printf("\n");
 }
 
+void vxor(uint8_t vrt, uint8_t vra, uint8_t vrb) {
+	instruction_info("Vector Logical XOR", "VX", "VRT,VRA,VRB", 239);
+
+	printf("\n");
+	printf("vxor(VRT, VRA, VRB)\n");
+	printf("      %2u   %2u   %2u\n", vrt, vra, vrb);
+	printf("\n");
+
+	v_str(vra);
+	printf("%s | VRA (vr%u)\n", vector_str, vra);
+	v_str(vrb);
+	printf("%s | VRB (vr%u)\n", vector_str, vrb);
+
+	VRT[0] = VRA[0]^VRB[0];
+	VRT[1] = VRA[1]^VRB[1];
+
+	v_str(vrt);
+	printf("%s | VRT (vr%u)\n", vector_str, vrt);
+}
+
 
 int main(int argc, char **argv)
 {
@@ -124,9 +151,14 @@ int main(int argc, char **argv)
 	r[7] = 0x0;
 	v(9, 0x1100ffeeddccbbaa, 0x9988776655443322);
 
+	v_str(9);
+	printf("%s | vr%u\n", vector_str, 9);
+	printf("\n");
+
 	neg(7, 4);
 	lvsr(5, 0, 7);
 	vspltisb(6, 15);
+	vxor(5, 5, 6);
 
 	return 0;
 }
