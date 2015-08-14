@@ -1,10 +1,6 @@
 #include <stdio.h>
 #include "pwrasm.h"
 
-uint64_t r[32];
-uint64_t vr[32][2];
-uint8_t vector_str[sizeof("11223344556677889900112233445566")];
-
 int main(int argc, char **argv)
 {
 	r[4] = 0x3fffffffeca8;

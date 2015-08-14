@@ -2,6 +2,10 @@
 #include <stdint.h>
 #include "pwrasm.h"
 
+uint64_t r[32];
+uint64_t vr[32][2];
+uint8_t vector_str[sizeof("11223344556677889900112233445566")];
+
 void *v_str(uint8_t vector_num) {
 	if (vr[vector_num][1] == 0)
 		sprintf(vector_str, HEX, vr[vector_num][0]);
