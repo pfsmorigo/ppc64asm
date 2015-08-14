@@ -2,6 +2,24 @@
 #include <stdint.h>
 #include "pwrasm.h"
 
+void addi(uint8_t rt, uint8_t ra, uint64_t si) {
+	instruction_info("Add Immediate", "D", "RT,RA,SI", 66);
+
+	printf("\n");
+	printf("addi(RT, RA, SI)\n");
+	printf("     %2u  %2u  %llu (0x%x)\n", rt, ra, si, si);
+	printf("\n");
+
+	printf(HEX" | RA (r%u)\n", RA, ra);
+	printf(HEX" | SI\n", si);
+
+	if (ra == 0) RT = si;
+	else RT = RA + si;
+
+	printf(HEX" | RT (r%u)\n", RT, rt);
+	printf("\n");
+}
+
 void lvsr(uint8_t vrt, uint8_t ra, uint8_t rb) {
 	instruction_info("Load Vector for Shift Right", "X", "VRT,RA,RB", 186);
 
