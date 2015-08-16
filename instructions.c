@@ -102,7 +102,7 @@ void vspltisb(uint8_t vrt, uint8_t sim) {
 	uint8_t i, *ptr;
 	ptr = (uint8_t *) &VRT;
 
-	for (i = 0; i < 128; i++)
+	for (i = 0; i < sizeof(uint64_t) * 2; i++)
 		*(ptr+i) = sim;
 
 	printf("\n");
