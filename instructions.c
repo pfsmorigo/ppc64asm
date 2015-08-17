@@ -2,12 +2,17 @@
 #include <stdint.h>
 #include "pwrasm.h"
 
+#define EXTS(x) (x << 16)
+#define ROTL(x, y) (x << y)
+
+#define MASK(x, y) ~((~ 0ULL) >> (sizeof(0ULL)*8-y)) << x
+
 void addi(uint8_t rt, uint8_t ra, uint64_t si) {
 	instruction_info("Add Immediate", "D", "RT,RA,SI", 66);
 
 	printf("\n");
 	printf("addi(RT, RA, SI)\n");
-	printf("     %2u  %2u  %llu (0x%x)\n", rt, ra, si, si);
+	printf("      %2u  %2u  0x%x (%llu)\n", rt, ra, si, si);
 	printf("\n");
 
 	printf(HEX" | RA (r%u)\n", RA, ra);
@@ -18,6 +23,36 @@ void addi(uint8_t rt, uint8_t ra, uint64_t si) {
 
 	printf(HEX" | RT (r%u)\n", RT, rt);
 	printf("\n");
+}
+
+void addis(uint8_t rt, uint8_t ra, uint64_t si) {
+	instruction_info("Add Immediate Shifted", "D", "RT,RA,SI", 66);
+
+	printf("\n");
+	printf("addis(RT, RA, SI)\n");
+	printf("      %2u  %2u  0x%x (%llu)\n", rt, ra, si, si);
+	printf("\n");
+
+	printf(HEX" | RA (r%u)\n", RA, ra);
+	printf(HEX" | SI\n", si);
+
+	if (ra == 0) RT = EXTS(si);
+	else RT = EXTS(RA + si);
+
+	printf(HEX" | RT (r%u)\n", RT, rt);
+	printf("\n");
+}
+
+void li(uint8_t rt, uint16_t si) {
+	instruction_info("Load Immediate", "", "RT,SI", 0);
+	printf("li(%u, 0x%x) == addi(%u, 0, 0x%x)\n", rt, si, rt, si);
+	addi(rt, 0, si);
+}
+
+void lis(uint8_t rt, uint16_t si) {
+	instruction_info("Load Immediate Shifted", "", "RT,SI", 0);
+	printf("lis(%u, 0x%x) == addis(%u, 0, 0x%x)\n", rt, si, rt, si);
+	addis(rt, 0, si);
 }
 
 void lvsr(uint8_t vrt, uint8_t ra, uint8_t rb) {
@@ -62,7 +97,7 @@ void lvsr(uint8_t vrt, uint8_t ra, uint8_t rb) {
 	printf(HEX" | b + RB = sh\n", sh);
 	printf(HEX" | sh (60:63 bits)\n", sh4);
 	v_str(vrt);
-	printf("%s | vr%u\n", vector_str, vrt);
+	printf("%s | vr%u\n", generic_buffer, vrt);
 	printf("\n");
 }
 
@@ -78,6 +113,74 @@ void neg(uint8_t rt, uint8_t ra) {
 	printf("\n");
 
 	RT = ~(RA) + 1;
+}
+
+void ori(uint8_t ra, uint8_t rs, uint16_t ui) {
+	instruction_info("OR Immediate", "D", "RA,RS,UI", 82);
+
+	printf("\n");
+	printf("ori(RA, RS, UI)\n");
+	printf("    %2u  %2u  %2u\n", ra, rs, ui);
+	printf(HEX" | RS (r%u)\n", RS, rs);
+	printf(HEX" | UI\n", ui);
+	printf(HEX" | RS || UI\n", RS | ui);
+	printf("\n");
+
+	RA = (RS | ui);
+}
+
+void oris(uint8_t ra, uint8_t rs, uint16_t ui) {
+	instruction_info("OR Immediate Shifted", "D", "RA,RS,UI", 83);
+
+	printf("\n");
+	printf("oris(RA, RS, UI)\n");
+	printf("    %2u  %2u  %2u\n", ra, rs, ui);
+	printf(HEX" | RS (r%u)\n", RS, rs);
+	printf(HEX" | UI\n", ui);
+	printf(HEX" | RS || UI\n", EXTS(RA | ui));
+	printf("\n");
+
+	RA = EXTS(RS | ui);
+}
+
+void rldicl(uint8_t ra, uint8_t rs, uint8_t sh, uint8_t me) {
+	instruction_info("Rotate Left Doubleword Immediate then Clear Left", "MD", "RA,RS,SH,ME", 94);
+
+	printf("\n");
+	printf("rldicl(RA, RS, SH, ME)\n");
+	printf("       %2u  %2u  %2u  0x%x\n", ra, rs, sh, me);
+	printf(HEX" | RS (r%u)\n", RS, rs);
+	printf(HEX" | SH\n", sh);
+	printf("\n");
+}
+
+void rldicr(uint8_t ra, uint8_t rs, uint8_t sh, uint8_t me) {
+	instruction_info("Rotate Left Doubleword Immediate then Clear Right", "MD", "RA,RS,SH,ME", 94);
+
+	printf("\n");
+	printf("rldicr(RA, RS, SH, ME)\n");
+	printf("       %2u  %2u  %2u  %2u\n", ra, rs, sh, me);
+	printf(HEX" | RS (r%u)\n", RS, rs);
+	printf(HEX" | ME\n", MASK(0, me));
+
+	printf(HEX" | ME22\n", MASK(0, 64));
+
+	RA = ROTL(RS, sh) & MASK(0, me);
+
+	printf(HEX" | RA (r%u)\n", RA, ra);
+	printf("\n");
+}
+
+void subi(uint8_t rt, uint8_t ra, uint64_t si) {
+	instruction_info("Subtract Immediate", "", "RT,RA,SI", 0);
+	printf("subi(%u, %u, 0x%x) == addi(%u, %u, (-1)0x%x)\n", rt, ra, si, rt, ra, si);
+	addi(rt, 0, si*(-1));
+}
+
+void subis(uint8_t rt, uint8_t ra, uint64_t si) {
+	instruction_info("Subtract Immediate Shifted", "", "RT,RA,SI", 0);
+	printf("subis(%u, %u, 0x%x) == addis(%u, %u, (-1)0x%x)\n", rt, ra, si, rt, ra, si);
+	addis(rt, 0, si*(-1));
 }
 
 void vperm(uint8_t vrt, uint8_t vra, uint8_t vrb, uint8_t vrc) {
@@ -107,7 +210,7 @@ void vspltisb(uint8_t vrt, uint8_t sim) {
 
 	printf("\n");
 	v_str(vrt);
-	printf("%s | VRT (vr%u)\n", vector_str, vrt);
+	printf("%s | VRT (vr%u)\n", generic_buffer, vrt);
 	printf("\n");
 }
 
@@ -120,14 +223,14 @@ void vxor(uint8_t vrt, uint8_t vra, uint8_t vrb) {
 	printf("\n");
 
 	v_str(vra);
-	printf("%s | VRA (vr%u)\n", vector_str, vra);
+	printf("%s | VRA (vr%u)\n", generic_buffer, vra);
 	v_str(vrb);
-	printf("%s | VRB (vr%u)\n", vector_str, vrb);
+	printf("%s | VRB (vr%u)\n", generic_buffer, vrb);
 
 	VRT[0] = VRA[0]^VRB[0];
 	VRT[1] = VRA[1]^VRB[1];
 
 	v_str(vrt);
-	printf("%s | VRT (vr%u)\n", vector_str, vrt);
+	printf("%s | VRT (vr%u)\n", generic_buffer, vrt);
 	printf("\n");
 }

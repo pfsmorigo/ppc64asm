@@ -8,6 +8,7 @@
 #define RB r[rb]
 #define RC r[rc]
 #define RT r[rt]
+#define RS r[rs]
 #define VRA vr[vra]
 #define VRB vr[vrb]
 #define VRC vr[vrc]
@@ -15,6 +16,6 @@
 
 extern uint64_t r[32];
 extern uint64_t vr[32][2];
-extern uint8_t vector_str[sizeof("11223344556677889900112233445566")];
+extern uint8_t generic_buffer[256];
 
 #endif
