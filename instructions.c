@@ -44,12 +44,14 @@ void addis(uint8_t rt, uint8_t ra, uint16_t si) {
 
 void li(uint8_t rt, uint16_t si) {
 	instruction_info("Load Immediate", "", "RT,SI", 0);
+	printf("\n");
 	printf("li(%u, 0x%x) == addi(%u, 0, 0x%x)\n", rt, si, rt, si);
 	addi(rt, 0, si);
 }
 
 void lis(uint8_t rt, uint16_t si) {
 	instruction_info("Load Immediate Shifted", "", "RT,SI", 0);
+	printf("\n");
 	printf("lis(%u, 0x%x) == addis(%u, 0, 0x%x)\n", rt, si, rt, si);
 	addis(rt, 0, si);
 }
@@ -148,7 +150,11 @@ void rldicl(uint8_t ra, uint8_t rs, uint8_t sh, uint8_t me) {
 	printf("rldicl(RA, RS, SH, ME)\n");
 	printf("       %2u  %2u  %2u  0x%x\n", ra, rs, sh, me);
 	printf(HEX" | RS (r%u)\n", RS, rs);
-	printf(HEX" | SH\n", sh);
+	printf(HEX" | ME\n", MASK(me, 63));
+
+	RA = ROTL(RS, sh) & MASK(me, 63);
+
+	printf(HEX" | RA (r%u)\n", RA, ra);
 	printf("\n");
 }
 
@@ -169,12 +175,14 @@ void rldicr(uint8_t ra, uint8_t rs, uint8_t sh, uint8_t me) {
 
 void subi(uint8_t rt, uint8_t ra, uint64_t si) {
 	instruction_info("Subtract Immediate", "", "RT,RA,SI", 0);
+	printf("\n");
 	printf("subi(%u, %u, 0x%x) == addi(%u, %u, (-1)0x%x)\n", rt, ra, si, rt, ra, si);
 	addi(rt, 0, si*(-1));
 }
 
 void subis(uint8_t rt, uint8_t ra, uint64_t si) {
 	instruction_info("Subtract Immediate Shifted", "", "RT,RA,SI", 0);
+	printf("\n");
 	printf("subis(%u, %u, 0x%x) == addis(%u, %u, (-1)0x%x)\n", rt, ra, si, rt, ra, si);
 	addis(rt, 0, si*(-1));
 }
