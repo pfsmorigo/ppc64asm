@@ -11,29 +11,6 @@ void v(uint8_t vector_num, uint64_t high, uint64_t low) {
 	vr[vector_num][1] = high;
 }
 
-void instruction_info(char *desc, char *form, char *attrib, uint16_t page) {
-	printf("\n");
-	printf("--------------------------------------------------------------\n");
-	printf("%s, %s-form, %s, Page %u\n", desc, form, attrib, page);
-	printf("--------------------------------------------------------------\n");
-}
-
-void show_table() {
-	int i;
-
-	printf("--------------------------------------------------------------\n");
-	printf(" Registers status\n");
-	printf("--------------------------------------------------------------\n");
-	for  (i = 0; i < 32; i++)
-		if (r[i])
-			printf(HEX" | r%u\n", r[i], i);
-
-	for  (i = 0; i < 32; i++)
-		if (vr[i][0] || vr[i][1])
-			printf("%s | vr%u\n", vector_str(generic_buffer, i), i);
-	printf("--------------------------------------------------------------\n");
-}
-
 uint8_t *vector_str(uint8_t *buffer, uint8_t vector_num) {
 	if (vr[vector_num][1] == 0)
 		sprintf(buffer, HEX, vr[vector_num][0]);
@@ -55,4 +32,27 @@ uint8_t *binary_str(uint8_t *buffer, uint64_t value, uint64_t size) {
 
 	*buffer_ptr = 0;
 	return buffer;
+}
+
+void instruction_info(char *desc, char *form, char *attrib, uint16_t page) {
+	printf("\n");
+	printf("--------------------------------------------------------------\n");
+	printf("%s, %s-form, %s, Page %u\n", desc, form, attrib, page);
+	printf("--------------------------------------------------------------\n");
+}
+
+void show_table() {
+	int i;
+
+	printf("--------------------------------------------------------------\n");
+	printf(" Registers status\n");
+	printf("--------------------------------------------------------------\n");
+	for  (i = 0; i < 32; i++)
+		if (r[i])
+			printf(HEX" | r%u\n", r[i], i);
+
+	for  (i = 0; i < 32; i++)
+		if (vr[i][0] || vr[i][1])
+			printf("%s | vr%u\n", vector_str(generic_buffer, i), i);
+	printf("--------------------------------------------------------------\n");
 }
