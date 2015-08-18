@@ -44,7 +44,7 @@ void instruction_info(char *desc, char *form, char *attrib, uint16_t page) {
 void show_table() {
 	int i;
 
-	printf("--------------------------------------------------------------\n");
+	printf("==============================================================\n");
 	printf(" Registers status\n");
 	printf("--------------------------------------------------------------\n");
 	for  (i = 0; i < 32; i++)
@@ -54,5 +54,5 @@ void show_table() {
 	for  (i = 0; i < 32; i++)
 		if (vr[i][0] || vr[i][1])
 			printf("%s | vr%u\n", vector_str(generic_buffer, i), i);
-	printf("--------------------------------------------------------------\n");
+	printf("==============================================================\n");
 }

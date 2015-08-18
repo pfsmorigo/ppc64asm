@@ -6,7 +6,7 @@
 #define ROTL(x, y) (x << y)
 #define MASK(x, y) (((~0ULL) << 63 - y) & (0xffffffffffffffff >> x))
 
-void addi(uint8_t rt, uint8_t ra, uint64_t si) {
+void addi(uint8_t rt, uint8_t ra, uint16_t si) {
 	instruction_info("Add Immediate", "D", "RT,RA,SI", 66);
 
 	printf("\n");
@@ -24,7 +24,7 @@ void addi(uint8_t rt, uint8_t ra, uint64_t si) {
 	printf("\n");
 }
 
-void addis(uint8_t rt, uint8_t ra, uint64_t si) {
+void addis(uint8_t rt, uint8_t ra, uint16_t si) {
 	instruction_info("Add Immediate Shifted", "D", "RT,RA,SI", 66);
 
 	printf("\n");
