@@ -196,6 +196,7 @@ void vperm(uint8_t vrt, uint8_t vra, uint8_t vrb, uint8_t vrc) {
 	printf("\n");
 
 	uint64_t temp[4];
+	uint8_t i, b;
 
 	printf("%s | VRA (vr%u)\n", vector_str(generic_buffer, VRA), vra);
 	printf("%s | VRB (vr%u)\n", vector_str(generic_buffer, VRB), vrb);

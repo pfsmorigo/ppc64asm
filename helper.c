@@ -6,6 +6,12 @@ uint64_t r[32];
 uint64_t vr[32][2];
 uint8_t generic_buffer[256];
 
+void print_bar(uint8_t divchar) {
+	uint16_t i;
+	for (i = 0; i < 80; i++) printf("%c", divchar);
+	printf("\n");
+}
+
 void v(uint8_t vector_num, uint64_t high, uint64_t low) {
 	vr[vector_num][0] = low;
 	vr[vector_num][1] = high;
@@ -36,17 +42,17 @@ uint8_t *binary_str(uint8_t *buffer, uint64_t value, uint16_t size) {
 
 void instruction_info(char *desc, char *form, char *attrib, uint16_t page) {
 	printf("\n");
-	printf("--------------------------------------------------------------\n");
+	print_bar('-');
 	printf("%s, %s-form, %s, Page %u\n", desc, form, attrib, page);
-	printf("--------------------------------------------------------------\n");
+	print_bar('-');
 }
 
 void show_table() {
 	int i;
 
-	printf("==============================================================\n");
+	print_bar('=');
 	printf(" Registers status\n");
-	printf("--------------------------------------------------------------\n");
+	print_bar('-');
 	for  (i = 0; i < 32; i++)
 		if (r[i])
 			printf(HEX" | r%u\n", r[i], i);
