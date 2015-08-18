@@ -24,7 +24,7 @@ void invert_value_in_vector_example() {
 int main(int argc, char **argv)
 {
 	load_register_example();
-	/*invert_value_in_vector_example();*/
-	show_table();
+	invert_value_in_vector_example();
+	/*show_table();*/
 	return 0;
 }

@@ -3,7 +3,6 @@ LD = ld
 RM = -rm
 
 CFLAGS = -m64
-#INCLUDES = -include pwrasm.h
 
 BANNER = @echo -e "\n=== $@\n"
 
