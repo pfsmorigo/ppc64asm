@@ -27,7 +27,8 @@ void invert_value_in_vector_example() {
 
 int main(int argc, char **argv)
 {
-	printf("%s\n", binary_str(generic_buffer, (uint8_t) (~0) >> 0, 64));
+	/*printf("%s\n", binary_str(generic_buffer, (uint8_t) (~0) >> 1, 8));*/
+	printf("%s\n", binary_str(generic_buffer, 255, 1));
 
 	/*invert_value_in_vector_example();*/
 	/*load_register_example();*/

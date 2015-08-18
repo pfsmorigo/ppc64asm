@@ -6,14 +6,6 @@ uint64_t r[32];
 uint64_t vr[32][2];
 uint8_t generic_buffer[256];
 
-void *v_str(uint8_t vector_num) {
-	if (vr[vector_num][1] == 0)
-		sprintf(generic_buffer, HEX, vr[vector_num][0]);
-	else
-		sprintf(generic_buffer, "%16llx%016llx", vr[vector_num][1],
-				vr[vector_num][0]);
-}
-
 void v(uint8_t vector_num, uint64_t high, uint64_t low) {
 	vr[vector_num][0] = low;
 	vr[vector_num][1] = high;
@@ -30,34 +22,37 @@ void show_table() {
 	int i;
 
 	printf("--------------------------------------------------------------\n");
+	printf(" Registers status\n");
+	printf("--------------------------------------------------------------\n");
 	for  (i = 0; i < 32; i++)
 		if (r[i])
 			printf(HEX" | r%u\n", r[i], i);
 
 	for  (i = 0; i < 32; i++)
-		if (vr[i][0] || vr[i][1]) {
-			v_str(i);
-			printf("%s | vr%u\n", generic_buffer, i);
-		}
+		if (vr[i][0] || vr[i][1])
+			printf("%s | vr%u\n", vector_str(generic_buffer, i), i);
 	printf("--------------------------------------------------------------\n");
 }
 
-uint64_t *binary_str(char *buffer, unsigned int value, uint64_t size) {
-    char *buffer_ptr = buffer;
+uint8_t *vector_str(uint8_t *buffer, uint8_t vector_num) {
+	if (vr[vector_num][1] == 0)
+		sprintf(buffer, HEX, vr[vector_num][0]);
+	else
+		sprintf(buffer, "%16llx%016llx", vr[vector_num][1], vr[vector_num][0]);
+	return buffer;
+}
 
-    if (value == 0) {
-        *buffer_ptr++ = '0';
-        *buffer_ptr = 0;
-        return buffer;
-    }
+uint8_t *binary_str(uint8_t *buffer, uint64_t value, uint64_t size) {
+    uint8_t *buffer_ptr, *value_ptr, bit;
+    int16_t i, j;
 
-    buffer_ptr += size;
-    *buffer_ptr-- = 0;
+	buffer_ptr = buffer;
+	value_ptr = (uint8_t *) &value;
 
-    while (value != 0) {
-        if (size-- == 0) return NULL;
-        *buffer_ptr-- = ((value & 1) == 1) ? '1' : '0';
-        value >>= 1;
-    }
-    return buffer_ptr + 1;
+	for (i = size - 1; i >= 0; i--)
+		for (j = 7; j >= 0; j--)
+			*buffer_ptr++ = ((*(value_ptr + i) >> j & 1) == 0)? '0' : '1';
+
+	*buffer_ptr = 0;
+	return buffer;
 }
