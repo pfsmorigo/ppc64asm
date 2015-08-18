@@ -4,8 +4,7 @@
 
 #define EXTS(x) (x << 16)
 #define ROTL(x, y) (x << y)
-
-#define MASK(x, y) ~((~ 0ULL) >> (sizeof(0ULL)*8-y)) << x
+#define MASK(x, y) (((~0ULL) << 63 - y) & (0xffffffffffffffff >> x))
 
 void addi(uint8_t rt, uint8_t ra, uint64_t si) {
 	instruction_info("Add Immediate", "D", "RT,RA,SI", 66);
@@ -161,8 +160,6 @@ void rldicr(uint8_t ra, uint8_t rs, uint8_t sh, uint8_t me) {
 	printf("       %2u  %2u  %2u  %2u\n", ra, rs, sh, me);
 	printf(HEX" | RS (r%u)\n", RS, rs);
 	printf(HEX" | ME\n", MASK(0, me));
-
-	printf(HEX" | ME22\n", MASK(0, 64));
 
 	RA = ROTL(RS, sh) & MASK(0, me);
 
