@@ -11,15 +11,15 @@ void v(uint8_t vector_num, uint64_t high, uint64_t low) {
 	vr[vector_num][1] = high;
 }
 
-uint8_t *vector_str(uint8_t *buffer, uint8_t vector_num) {
-	if (vr[vector_num][1] == 0)
-		sprintf(buffer, HEX, vr[vector_num][0]);
+uint8_t *vector_str(uint8_t *buffer, uint64_t *vector) {
+	if (*(vector + 1) == 0)
+		sprintf(buffer, HEX, *(vector + 1));
 	else
-		sprintf(buffer, "%16llx%016llx", vr[vector_num][1], vr[vector_num][0]);
+		sprintf(buffer, "%16llx%016llx", *(vector + 1), *vector);
 	return buffer;
 }
 
-uint8_t *binary_str(uint8_t *buffer, uint64_t value, uint64_t size) {
+uint8_t *binary_str(uint8_t *buffer, uint64_t value, uint16_t size) {
     uint8_t *buffer_ptr, *value_ptr, bit;
     int16_t i, j;
 
@@ -53,6 +53,6 @@ void show_table() {
 
 	for  (i = 0; i < 32; i++)
 		if (vr[i][0] || vr[i][1])
-			printf("%s | vr%u\n", vector_str(generic_buffer, i), i);
+			printf("%s | vr%u\n", vector_str(generic_buffer, vr[i]), i);
 	printf("==============================================================\n");
 }
