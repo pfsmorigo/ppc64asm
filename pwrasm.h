@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#define HEX "%32llx"
+#define HEX "%64llx"
 #define RA r[ra]
 #define RB r[rb]
 #define RC r[rc]

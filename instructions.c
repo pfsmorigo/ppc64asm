@@ -97,7 +97,7 @@ void lvsr(uint8_t vrt, uint8_t ra, uint8_t rb) {
 	printf(HEX" | b\n", b);
 	printf(HEX" | b + RB = sh\n", sh);
 	printf(HEX" | sh (60:63 bits)\n", sh4);
-	printf("%s | vr%u\n", vector_str(generic_buffer, VRT), vrt);
+	printf("%*s | vr%u\n", 64, vector_str(generic_buffer, VRT, 2), vrt);
 	printf("\n");
 }
 
@@ -198,15 +198,15 @@ void vperm(uint8_t vrt, uint8_t vra, uint8_t vrb, uint8_t vrc) {
 	uint64_t temp[4];
 	uint8_t i, b;
 
-	printf("%s | VRA (vr%u)\n", vector_str(generic_buffer, VRA), vra);
-	printf("%s | VRB (vr%u)\n", vector_str(generic_buffer, VRB), vrb);
+	printf("%*s | VRA (vr%u)\n", 64, vector_str(generic_buffer, VRA, 2), vra);
+	printf("%*s | VRB (vr%u)\n", 64, vector_str(generic_buffer, VRB, 2), vrb);
 
 	temp[0] = VRA[0];
 	temp[1] = VRA[1];
 	temp[2] = VRB[0];
 	temp[3] = VRB[1];
 
-	printf("%s | VRA || VRB\n", vector_str(generic_buffer, temp));
+	printf("%*s | VRA || VRB\n", 64, vector_str(generic_buffer, temp, 4));
 	printf("\n");
 
 }
@@ -225,7 +225,7 @@ void vspltisb(uint8_t vrt, uint8_t sim) {
 		*(ptr+i) = sim;
 
 	printf("\n");
-	printf("%s | VRT (vr%u)\n", vector_str(generic_buffer, VRT), vrt);
+	printf("%*s | VRT (vr%u)\n", 64, vector_str(generic_buffer, VRT, 2), vrt);
 	printf("\n");
 }
 
@@ -237,12 +237,12 @@ void vxor(uint8_t vrt, uint8_t vra, uint8_t vrb) {
 	printf("      %2u   %2u   %2u\n", vrt, vra, vrb);
 	printf("\n");
 
-	printf("%s | VRA (vr%u)\n", vector_str(generic_buffer, VRA), vra);
-	printf("%s | VRB (vr%u)\n", vector_str(generic_buffer, VRB), vrb);
+	printf("%*s | VRA (vr%u)\n", 64, vector_str(generic_buffer, VRA, 2), vra);
+	printf("%*s | VRB (vr%u)\n", 64, vector_str(generic_buffer, VRB, 2), vrb);
 
 	VRT[0] = VRA[0]^VRB[0];
 	VRT[1] = VRA[1]^VRB[1];
 
-	printf("%s | VRT (vr%u)\n", vector_str(generic_buffer, VRT), vrt);
+	printf("%*s | VRT (vr%u)\n", 64, vector_str(generic_buffer, VRT, 2), vrt);
 	printf("\n");
 }
