@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <string.h>
 #include "pwrasm.h"
 
 uint64_t r[32];
@@ -12,6 +13,11 @@ void print_bar(uint8_t divchar) {
 	printf("\n");
 }
 
+void print_rule() {
+	printf("_______._______._______._______._______._______._______._______.\n");
+	printf("%8u%8u%8u%8u%8u%8u%8u%8u\n", 4, 8, 12, 16, 20, 24, 28, 32);
+}
+
 void v(uint8_t vector_num, uint64_t high, uint64_t low) {
 	vr[vector_num][0] = low;
 	vr[vector_num][1] = high;
@@ -22,7 +28,7 @@ uint8_t *vector_str(uint8_t *buffer, uint64_t *vector, uint16_t size) {
 	*buffer = 0;
 
 	for (i = size - 1; i >= 0; i--)
-		if(strlen(buffer))
+		if (strlen(buffer))
 			sprintf(buffer + strlen(buffer), "%016llx", *(vector + i));
 		else if (*(vector + i) != 0)
 			sprintf(buffer + strlen(buffer), "%llx", *(vector + i));

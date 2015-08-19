@@ -196,17 +196,34 @@ void vperm(uint8_t vrt, uint8_t vra, uint8_t vrb, uint8_t vrc) {
 	printf("\n");
 
 	uint64_t temp[4];
-	uint8_t i, b;
-
-	printf("%*s | VRA (vr%u)\n", 64, vector_str(generic_buffer, VRA, 2), vra);
-	printf("%*s | VRB (vr%u)\n", 64, vector_str(generic_buffer, VRB, 2), vrb);
+	uint8_t i, b, *temp_ptr, *vrc_ptr, *vrt_ptr;
 
 	temp[0] = VRA[0];
 	temp[1] = VRA[1];
 	temp[2] = VRB[0];
 	temp[3] = VRB[1];
 
-	printf("%*s | VRA || VRB\n", 64, vector_str(generic_buffer, temp, 4));
+	temp_ptr = (uint8_t *) &temp;
+	vrc_ptr = (uint8_t *) &VRC;
+	vrt_ptr = (uint8_t *) &VRT;
+
+	printf("%*s | VRA (vr%u)\n", 64, vector_str(generic_buffer, VRA, 2), vra);
+	printf("%*s | VRB (vr%u)\n", 64, vector_str(generic_buffer, VRB, 2), vrb);
+	printf("%*s | VRC (vr%u)\n", 64, vector_str(generic_buffer, VRC, 2), vrc);
+	printf("%*s | (VRA || VRB) = TEMP\n", 64, vector_str(generic_buffer, temp, 4));
+	print_rule();
+	printf("\n");
+
+	for (i = 0; i < 16; i++) {
+		b = *(vrc_ptr + i);
+		*(vrt_ptr + i) = *(temp_ptr + b);
+
+		printf("      B = VRC[%2u] = %2u ---> VRT[%2u] = TEMP[B = %2u] = %2x\n",
+				i, b, i, b, *(temp_ptr + b));
+	}
+
+	printf("\n");
+	printf("%*s | VRT (vr%u)\n", 64, vector_str(generic_buffer, VRT, 4), vrt);
 	printf("\n");
 
 }
