@@ -7,15 +7,15 @@ uint64_t r[32];
 uint64_t vr[32][2];
 uint8_t generic_buffer[256];
 
+uint8_t is_little_endian() {
+	uint16_t temp = 0xaabb;
+	return (*((uint8_t *) &temp) == 0xaa)? 0 : 1;
+}
+
 void print_bar(uint8_t divchar) {
 	uint16_t i;
 	for (i = 0; i < 80; i++) printf("%c", divchar);
 	printf("\n");
-}
-
-void print_rule() {
-	printf("_______._______._______._______._______._______._______._______.\n");
-	printf("%8u%8u%8u%8u%8u%8u%8u%8u\n", 4, 8, 12, 16, 20, 24, 28, 32);
 }
 
 void v(uint8_t vector_num, uint64_t high, uint64_t low) {

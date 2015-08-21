@@ -211,21 +211,24 @@ void vperm(uint8_t vrt, uint8_t vra, uint8_t vrb, uint8_t vrc) {
 	printf("%*s | VRB (vr%u)\n", 64, vector_str(generic_buffer, VRB, 2), vrb);
 	printf("%*s | VRC (vr%u)\n", 64, vector_str(generic_buffer, VRC, 2), vrc);
 	printf("%*s | (VRA || VRB) = TEMP\n", 64, vector_str(generic_buffer, temp, 4));
-	print_rule();
 	printf("\n");
 
-	for (i = 0; i < 16; i++) {
-		b = *(vrc_ptr + i);
-		*(vrt_ptr + i) = *(temp_ptr + b);
-
-		printf("      B = VRC[%2u] = %2u ---> VRT[%2u] = TEMP[B = %2u] = %2x\n",
-				i, b, i, b, *(temp_ptr + b));
+	for (i = 0; i < VECTOR_SIZE; i++) {
+		if (is_little_endian()) {
+			b = *(vrc_ptr + VECTOR_SIZE - 1 - i);
+			*(vrt_ptr + i) = *(temp_ptr + (VECTOR_SIZE * 2) - 1 - b);
+		}
+		else {
+			b = *(vrc_ptr + i);
+			*(vrt_ptr + i) = *(temp_ptr + b);
+		}
+		printf("      B = VRC[%2u] = 0x%02x (%2u) ---> VRT[%2u] = TEMP[B = %2u] = 0x%02x\n",
+				i, b, b, i, b, *(temp_ptr +b));
 	}
 
 	printf("\n");
 	printf("%*s | VRT (vr%u)\n", 64, vector_str(generic_buffer, VRT, 4), vrt);
 	printf("\n");
-
 }
 
 void vspltisb(uint8_t vrt, uint8_t sim) {

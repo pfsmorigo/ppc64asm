@@ -14,6 +14,9 @@
 #define VRC vr[vrc]
 #define VRT vr[vrt]
 
+#define INSTRUCTION_SIZE 8
+#define VECTOR_SIZE 16
+
 extern uint64_t r[32];
 extern uint64_t vr[32][2];
 extern uint8_t generic_buffer[256];
