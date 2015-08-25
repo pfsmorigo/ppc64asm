@@ -17,6 +17,12 @@
 #define INSTRUCTION_SIZE 8
 #define VECTOR_SIZE 16
 
+/*#define instruction_info(condition, ...) \*/
+	/*instruction_info_real(__func__, condition, __VA_ARGS__)*/
+
+#define instruction_info(desc, form, attr, page) \
+	instruction_info_real(__func__, desc, form, attr, page)
+
 extern uint64_t r[32];
 extern uint64_t vr[32][2];
 extern uint8_t generic_buffer[256];
