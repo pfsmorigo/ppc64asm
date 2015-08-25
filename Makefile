@@ -6,9 +6,9 @@ CFLAGS = -m64
 
 BANNER = @echo -e "\n=== $@\n"
 
-all: pwrasm
+all: ppc64asm
 
-pwrasm: main.o helper.o instructions.o
+ppc64asm: main.o helper.o instructions.o
 	$(BANNER)
 	$(CC) $(CFLAGS) $(INCLUDES) $^ -o $@
 
@@ -18,4 +18,4 @@ pwrasm: main.o helper.o instructions.o
 
 clean:
 	$(BANNER)
-	$(RM) -f pwrasm *.o
+	$(RM) -f ppc64asm *.o

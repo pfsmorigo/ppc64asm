@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
-#include "pwrasm.h"
+#include "ppc64asm.h"
 
 uint64_t r[32];
 uint64_t vr[32][2];

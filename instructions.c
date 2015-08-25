@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdint.h>
-#include "pwrasm.h"
+#include "ppc64asm.h"
 
 #define EXTS(x) (x << 16)
 #define ROTL(x, y) (x << y)

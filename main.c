@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "pwrasm.h"
+#include "ppc64asm.h"
 
 void load_register_example() {
 	lis(7, 0xaabb);
