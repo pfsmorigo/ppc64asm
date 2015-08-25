@@ -7,7 +7,7 @@
 #define MASK(x, y) (((~0ULL) << 63 - y) & (0xffffffffffffffff >> x))
 
 void addi(uint8_t rt, uint8_t ra, uint16_t si) {
-	instruction_info("Add Immediate", "D", "RT,RA,SI", 66);
+	instruction_info("Add Immediate", "D", 66, "RT,RA,SI");
 
 	printf("\n");
 	printf("addi(RT, RA, SI)\n");
@@ -25,7 +25,7 @@ void addi(uint8_t rt, uint8_t ra, uint16_t si) {
 }
 
 void addis(uint8_t rt, uint8_t ra, uint16_t si) {
-	instruction_info("Add Immediate Shifted", "D", "RT,RA,SI", 66);
+	instruction_info("Add Immediate Shifted", "D", 66, "RT,RA,SI");
 
 	printf("\n");
 	printf("addis(RT, RA, SI)\n");
@@ -43,19 +43,19 @@ void addis(uint8_t rt, uint8_t ra, uint16_t si) {
 }
 
 void cmp(uint8_t bf, uint8_t l, uint8_t ra, uint8_t rb) {
-	instruction_info("Compare", "X", "BF,L,RA,RB", 78);
+	instruction_info("Compare", "X", 78, "BF,L,RA,RB");
 }
 
 void cmpdi(uint8_t vrt, uint8_t ra, uint8_t rb) {
-	instruction_info("Compare Doubleword Immediate", "D", "BF,L,RA,SI", 78);
+	instruction_info("Compare Doubleword Immediate", "D", 78, "BF,L,RA,SI");
 }
 
 void cmpi(uint8_t bf, uint8_t l, uint8_t ra, uint8_t si) {
-	instruction_info("Compare Immediate", "D", "BF,L,RA,SI", 78);
+	instruction_info("Compare Immediate", "D", 78, "BF,L,RA,SI");
 }
 
 void cmpwi(uint8_t rt, uint8_t si) {
-	instruction_info("Compare Word Immediate", "", "RT,RA,RB", 78);
+	instruction_info("Compare Word Immediate", "", 78, "RT,RA,RB");
 	printf("\n");
 	printf("cmpwi(%u, 0x%x) == cmpi(0, 0, %u, 0x%x)\n", rt, si, rt, si);
 	cmpi(0, 0, rt, si);
@@ -69,14 +69,14 @@ void li(uint8_t rt, uint16_t si) {
 }
 
 void lis(uint8_t rt, uint16_t si) {
-	instruction_info("Load Immediate Shifted", "", "RT,SI", 0);
+	instruction_info("Load Immediate Shifted", "", 0, "RT,SI");
 	printf("\n");
 	printf("lis(%u, 0x%x) == addis(%u, 0, 0x%x)\n", rt, si, rt, si);
 	addis(rt, 0, si);
 }
 
 void lvsr(uint8_t vrt, uint8_t ra, uint8_t rb) {
-	instruction_info("Load Vector for Shift Right", "X", "VRT,RA,RB", 186);
+	instruction_info("Load Vector for Shift Right", 186, "X", "VRT,RA,RB");
 
 	printf("\n");
 	printf("lvsr(VRT, RA, RB)\n");
@@ -121,27 +121,29 @@ void lvsr(uint8_t vrt, uint8_t ra, uint8_t rb) {
 }
 
 void lvx(uint8_t vrt, uint8_t ra, uint8_t rb) {
-	instruction_info("Load Vector Indexed LRU", "X", "VRT,RA,RB", 182);
+	instruction_info("Load Vector Indexed LRU", "X", 182, "VRT,RA,RB");
+
+
 }
 
 void mtctr(uint8_t rs) {
-	instruction_info("Move To CTR", "XFX", "RS", 104);
+	instruction_info("Move To CTR", "XFX", 104, "RS");
 }
 
 void mtppr(uint8_t rs) {
-	instruction_info("Move To PPR (?)", "XFX", "RS", 104);
+	instruction_info("Move To PPR (?)", "XFX", 104, "RS");
 }
 
 void mtppr32(uint8_t rs) {
-	instruction_info("Move To PPR32 (?)", "XFX", "RS", 104);
+	instruction_info("Move To PPR32 (?)", "XFX", 104, "RS");
 }
 
 void mtspr(uint8_t spr, uint8_t rs) {
-	instruction_info("Move To SPR", "XFX", "SPR, RS", 104);
+	instruction_info("Move To SPR", "XFX", 104, "SPR, RS");
 }
 
 void neg(uint8_t rt, uint8_t ra) {
-	instruction_info("Negate", "XO", "RT,RA", 70);
+	instruction_info("Negate", "XO", 70, "RT,RA");
 
 	printf("\n");
 	printf("neg(RT, RA)\n");
@@ -155,7 +157,7 @@ void neg(uint8_t rt, uint8_t ra) {
 }
 
 void ori(uint8_t ra, uint8_t rs, uint16_t ui) {
-	instruction_info("OR Immediate", "D", "RA,RS,UI", 82);
+	instruction_info("OR Immediate", "D", 82, "RA,RS,UI");
 
 	printf("\n");
 	printf("ori(RA, RS, UI)\n");
@@ -169,7 +171,7 @@ void ori(uint8_t ra, uint8_t rs, uint16_t ui) {
 }
 
 void oris(uint8_t ra, uint8_t rs, uint16_t ui) {
-	instruction_info("OR Immediate Shifted", "D", "RA,RS,UI", 83);
+	instruction_info("OR Immediate Shifted", "D", 83, "RA,RS,UI");
 
 	printf("\n");
 	printf("oris(RA, RS, UI)\n");
@@ -183,7 +185,8 @@ void oris(uint8_t ra, uint8_t rs, uint16_t ui) {
 }
 
 void rldicl(uint8_t ra, uint8_t rs, uint8_t sh, uint8_t me) {
-	instruction_info("Rotate Left Doubleword Immediate then Clear Left", "MD", "RA,RS,SH,ME", 94);
+	instruction_info("Rotate Left Doubleword Immediate then Clear Left", "MD",
+	                 94, "RA,RS,SH,ME");
 
 	printf("\n");
 	printf("rldicl(RA, RS, SH, ME)\n");
@@ -198,7 +201,8 @@ void rldicl(uint8_t ra, uint8_t rs, uint8_t sh, uint8_t me) {
 }
 
 void rldicr(uint8_t ra, uint8_t rs, uint8_t sh, uint8_t me) {
-	instruction_info("Rotate Left Doubleword Immediate then Clear Right", "MD", "RA,RS,SH,ME", 94);
+	instruction_info("Rotate Left Doubleword Immediate then Clear Right", "MD",
+	                 94, "RA,RS,SH,ME");
 
 	printf("\n");
 	printf("rldicr(RA, RS, SH, ME)\n");
@@ -213,21 +217,21 @@ void rldicr(uint8_t ra, uint8_t rs, uint8_t sh, uint8_t me) {
 }
 
 void subi(uint8_t rt, uint8_t ra, uint64_t si) {
-	instruction_info("Subtract Immediate", "", "RT,RA,SI", 0);
+	instruction_info("Subtract Immediate", "", 0, "RT,RA,SI");
 	printf("\n");
 	printf("subi(%u, %u, 0x%x) == addi(%u, %u, (-1)0x%x)\n", rt, ra, si, rt, ra, si);
 	addi(rt, 0, si*(-1));
 }
 
 void subis(uint8_t rt, uint8_t ra, uint64_t si) {
-	instruction_info("Subtract Immediate Shifted", "", "RT,RA,SI", 0);
+	instruction_info("Subtract Immediate Shifted", "", 0, "RT,RA,SI");
 	printf("\n");
 	printf("subis(%u, %u, 0x%x) == addis(%u, %u, (-1)0x%x)\n", rt, ra, si, rt, ra, si);
 	addis(rt, 0, si*(-1));
 }
 
 void vperm(uint8_t vrt, uint8_t vra, uint8_t vrb, uint8_t vrc) {
-	instruction_info("Vector Permute", "VA", "VRT,VRA,VRB,VRC", 198);
+	instruction_info("Vector Permute", "VA", 198, "VRT,VRA,VRB,VRC");
 
 	printf("\n");
 	printf("vperm(VRT, VRA, VRB, VRC)\n");
@@ -271,7 +275,7 @@ void vperm(uint8_t vrt, uint8_t vra, uint8_t vrb, uint8_t vrc) {
 }
 
 void vspltisb(uint8_t vrt, uint8_t sim) {
-	instruction_info("Vector Splat Immediate Signed Byte", "VX", "VRT,SIM", 198);
+	instruction_info("Vector Splat Immediate Signed Byte", "VX", 198, "VRT,SIM");
 
 	printf("\n");
 	printf("vspltisb(VRT, SIM)\n");
@@ -289,7 +293,7 @@ void vspltisb(uint8_t vrt, uint8_t sim) {
 }
 
 void vxor(uint8_t vrt, uint8_t vra, uint8_t vrb) {
-	instruction_info("Vector Logical XOR", "VX", "VRT,VRA,VRB", 239);
+	instruction_info("Vector Logical XOR", "VX", 239, "VRT,VRA,VRB");
 
 	printf("\n");
 	printf("vxor(VRT, VRA, VRB)\n");

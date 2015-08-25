@@ -50,7 +50,7 @@ uint8_t *binary_str(uint8_t *buffer, uint64_t value, uint16_t size) {
 	return buffer;
 }
 
-void instruction_info_real(char *name, char *desc, char *form, char *attr, uint16_t page) {
+void instruction_info_real(char *name, char *desc, char *form, uint16_t page, char *attr) {
 	printf("\n");
 	print_bar('-');
 	printf("%s, %s-form, %s, Page %u\n", desc, form, attr, page);

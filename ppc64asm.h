@@ -20,8 +20,8 @@
 /*#define instruction_info(condition, ...) \*/
 	/*instruction_info_real(__func__, condition, __VA_ARGS__)*/
 
-#define instruction_info(desc, form, attr, page) \
-	instruction_info_real(__func__, desc, form, attr, page)
+#define instruction_info(desc, form, page, attr) \
+	instruction_info_real(__func__, desc, form, page, attr)
 
 extern uint64_t r[32];
 extern uint64_t vr[32][2];
