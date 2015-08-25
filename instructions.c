@@ -42,6 +42,25 @@ void addis(uint8_t rt, uint8_t ra, uint16_t si) {
 	printf("\n");
 }
 
+void cmp(uint8_t bf, uint8_t l, uint8_t ra, uint8_t rb) {
+	instruction_info("Compare", "X", "BF,L,RA,RB", 78);
+}
+
+void cmpdi(uint8_t vrt, uint8_t ra, uint8_t rb) {
+	instruction_info("Compare Doubleword Immediate", "D", "BF,L,RA,SI", 78);
+}
+
+void cmpi(uint8_t bf, uint8_t l, uint8_t ra, uint8_t si) {
+	instruction_info("Compare Immediate", "D", "BF,L,RA,SI", 78);
+}
+
+void cmpwi(uint8_t rt, uint8_t si) {
+	instruction_info("Compare Word Immediate", "", "RT,RA,RB", 78);
+	printf("\n");
+	printf("cmpwi(%u, 0x%x) == cmpi(0, 0, %u, 0x%x)\n", rt, si, rt, si);
+	cmpi(0, 0, rt, si);
+}
+
 void li(uint8_t rt, uint16_t si) {
 	instruction_info("Load Immediate", "", "RT,SI", 0);
 	printf("\n");
@@ -99,6 +118,26 @@ void lvsr(uint8_t vrt, uint8_t ra, uint8_t rb) {
 	printf(HEX" | sh (60:63 bits)\n", sh4);
 	printf("%*s | vr%u\n", 64, vector_str(generic_buffer, VRT, 2), vrt);
 	printf("\n");
+}
+
+void lvx(uint8_t vrt, uint8_t ra, uint8_t rb) {
+	instruction_info("Load Vector Indexed LRU", "X", "VRT,RA,RB", 182);
+}
+
+void mtctr(uint8_t rs) {
+	instruction_info("Move To CTR", "XFX", "RS", 104);
+}
+
+void mtppr(uint8_t rs) {
+	instruction_info("Move To PPR (?)", "XFX", "RS", 104);
+}
+
+void mtppr32(uint8_t rs) {
+	instruction_info("Move To PPR32 (?)", "XFX", "RS", 104);
+}
+
+void mtspr(uint8_t spr, uint8_t rs) {
+	instruction_info("Move To SPR", "XFX", "SPR, RS", 104);
 }
 
 void neg(uint8_t rt, uint8_t ra) {
