@@ -17,11 +17,8 @@
 #define INSTRUCTION_SIZE 8
 #define VECTOR_SIZE 16
 
-/*#define instruction_info(condition, ...) \*/
-	/*instruction_info_real(__func__, condition, __VA_ARGS__)*/
-
-#define instruction_info(desc, form, page, attr) \
-	instruction_info_real(__func__, desc, form, page, attr)
+#define instruction_info(desc, form, page, attr, ...) \
+	instruction_info_real(__func__, desc, form, page, attr, __VA_ARGS__)
 
 extern uint64_t r[32];
 extern uint64_t vr[32][2];

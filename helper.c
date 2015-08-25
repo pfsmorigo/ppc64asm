@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
+#include <stdarg.h>
 #include "ppc64asm.h"
 
 uint64_t r[32];
@@ -50,7 +51,8 @@ uint8_t *binary_str(uint8_t *buffer, uint64_t value, uint16_t size) {
 	return buffer;
 }
 
-void instruction_info_real(char *name, char *desc, char *form, uint16_t page, char *attr) {
+void instruction_info_real(char *name, char *desc, char *form, uint16_t page,
+	                       char *attr, int value, ...) {
 	printf("\n");
 	print_bar('-');
 	printf("%s, %s-form, %s, Page %u\n", desc, form, attr, page);
