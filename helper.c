@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdarg.h>
+#include <stdlib.h> // free()
 #include "ppc64asm.h"
 
 uint64_t r[32];
@@ -15,7 +16,7 @@ uint8_t is_little_endian() {
 
 void print_bar(uint8_t divchar) {
 	uint16_t i;
-	for (i = 0; i < 80; i++) printf("%c", divchar);
+	for (i = 0; i < 86; i++) printf("%c", divchar);
 	printf("\n");
 }
 
@@ -51,12 +52,53 @@ uint8_t *binary_str(uint8_t *buffer, uint64_t value, uint16_t size) {
 	return buffer;
 }
 
+void general_info() {
+	printf("General Info\n");
+	print_bar('-');
+	printf("\n");
+}
+
 void instruction_info_real(char *name, char *desc, char *form, uint16_t page,
 	                       char *attr, int value, ...) {
+	char *ch;
+	char *str;
+	int i;
+	char title[100];
+
+	sprintf(title, "%s, %s-form, Page %u", desc, form, page);
+
+	printf("\n\n");
+	printf("%s(%s) %*s\n", name, attr, 70, title);
+	print_bar('-');
 	printf("\n");
-	print_bar('-');
-	printf("%s, %s-form, %s, Page %u\n", desc, form, attr, page);
-	print_bar('-');
+
+	str = strdup(attr);
+	ch = strtok(str, ",");
+
+	i = 1;
+	while (ch != NULL) {
+		printf("   %d)  %s (", i++, ch);
+
+		if (*ch == 'R')
+			printf("%s", "Register");
+		if (*ch == 'V')
+			printf("%s", "Vector Register");
+		else if ((*ch == 'S') && (*(ch + 1) == 'I'))
+			printf("%s", "Signed Value");
+		else if ((*ch == 'U') && (*(ch + 1) == 'I'))
+			printf("%s", "Signed Value");
+
+		printf(") %d\n", i);
+
+
+
+
+
+		ch = strtok(NULL, ",");
+
+	}
+
+	free(str);
 }
 
 void show_table() {

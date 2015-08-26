@@ -140,15 +140,13 @@ void mtppr32(uint8_t rs) {
 }
 
 void mtspr(uint8_t spr, uint8_t rs) {
-	instruction_info("Move To SPR", "XFX", 104, "SPR, RS", spr, rs);
+	instruction_info("Move To SPR", "XFX", 104, "SPR,RS", spr, rs);
 }
 
 void neg(uint8_t rt, uint8_t ra) {
 	instruction_info("Negate", "XO", 70, "RT,RA", rt, ra);
 
 	printf("\n");
-	printf("neg(RT, RA)\n");
-	printf("    %2u  %2u\n", rt, ra);
 	printf(HEX" | RA (r%u)\n", RA, ra);
 	printf(HEX" | ~RA\n", ~(RA));
 	printf(HEX" | ~RA + 1 = RT (r%u)\n", ~(RA) + 1, rt);

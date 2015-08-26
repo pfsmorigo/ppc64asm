@@ -24,26 +24,28 @@ void invert_value_in_vector_example() {
 }
 
 void set_encrypt_key() {
+	r[3] = 0x3fffffffeca8;
 	neg(9, 3);
 	lvx(1, 0, 3);
 	addi(3, 3, 15);
-	lvsr(3, 0, 9);
-	li(8, 0x20);
-	cmpwi(4, 192);
-	lvx(2, 0, 3);
-	vspltisb(5, 0x0f);
-	lvx(4, 0, 6);
-	vxor(3, 3, 5);
-	lvx(5, 8, 6);
-	addi(6, 6, 0x10);
-	vperm(1, 1, 2, 3);
-	li(7, 8);
-	vxor(0, 0, 0);
-	mtctr(7);
+	/*lvsr(3, 0, 9);*/
+	/*li(8, 0x20);*/
+	/*cmpwi(4, 192);*/
+	/*lvx(2, 0, 3);*/
+	/*vspltisb(5, 0x0f);*/
+	/*lvx(4, 0, 6);*/
+	/*vxor(3, 3, 5);*/
+	/*lvx(5, 8, 6);*/
+	/*addi(6, 6, 0x10);*/
+	/*vperm(1, 1, 2, 3);*/
+	/*li(7, 8);*/
+	/*vxor(0, 0, 0);*/
+	/*mtctr(7);*/
 }
 
 int main(int argc, char **argv)
 {
+	general_info();
 	/*load_register_example();*/
 	/*invert_value_in_vector_example();*/
 	set_encrypt_key();

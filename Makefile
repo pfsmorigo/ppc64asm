@@ -2,7 +2,7 @@ CC = gcc
 LD = ld
 RM = -rm
 
-CFLAGS = -m64
+CFLAGS = -m64 -ggdb
 
 BANNER = @echo -e "\n=== $@\n"
 
