@@ -9,6 +9,11 @@ uint64_t r[32];
 uint64_t vr[32][2];
 uint8_t generic_buffer[256];
 
+struct attribute {
+	uint8_t name[5];
+	uint16_t value;
+};
+
 uint8_t is_little_endian() {
 	uint16_t temp = 0xaabb;
 	return (*((uint8_t *) &temp) == 0xaa)? 0 : 1;
@@ -16,7 +21,7 @@ uint8_t is_little_endian() {
 
 void print_bar(uint8_t divchar) {
 	uint16_t i;
-	for (i = 0; i < 86; i++) printf("%c", divchar);
+	for (i = 0; i < 80; i++) printf("%c", divchar);
 	printf("\n");
 }
 
@@ -56,49 +61,59 @@ void general_info() {
 	printf("General Info\n");
 	print_bar('-');
 	printf("\n");
+	printf("    RA, RB, RC, RT: General Purpose Register    ");
+	printf("    SI: Signed Integer\n");
+	printf("    VRA, VRB, VRC, VRT: Vector Register         ");
+	printf("    UI: Unsigned Integer\n");
 }
 
-void instruction_info_real(char *name, char *desc, char *form, uint16_t page,
-	                       char *attr, int value, ...) {
-	char *ch;
-	char *str;
-	int i;
-	char title[100];
-
-	sprintf(title, "%s, %s-form, Page %u", desc, form, page);
-
-	printf("\n\n");
-	printf("%s(%s) %*s\n", name, attr, 70, title);
-	print_bar('-');
-	printf("\n");
+void instruction_info_real(uint8_t *name, uint8_t *desc, uint8_t *form,
+                           uint16_t page, uint8_t *attr, uint16_t value, ...) {
+	uint8_t *ch;
+	uint8_t *str;
+	int8_t i, num;
+	uint8_t title[2][100];
+	struct attribute attributes[10];
+	va_list values;
 
 	str = strdup(attr);
 	ch = strtok(str, ",");
 
-	i = 1;
+	va_start(values, value);
+	num = 0;
 	while (ch != NULL) {
-		printf("   %d)  %s (", i++, ch);
-
-		if (*ch == 'R')
-			printf("%s", "Register");
-		if (*ch == 'V')
-			printf("%s", "Vector Register");
-		else if ((*ch == 'S') && (*(ch + 1) == 'I'))
-			printf("%s", "Signed Value");
-		else if ((*ch == 'U') && (*(ch + 1) == 'I'))
-			printf("%s", "Signed Value");
-
-		printf(") %d\n", i);
-
-
-
-
-
+		strcpy(attributes[num].name, ch);
+		attributes[num++].value = value;
+		value = va_arg(values, uint64_t);
 		ch = strtok(NULL, ",");
+	}
+	va_end(values);
+	free(str);
 
+	sprintf(title[0], "\n%s(", name);
+	sprintf(title[1], "%*s", strlen(name) - 1, " ");
+
+	for  (i = 0; i < num; i++)
+	{
+		sprintf(title[0] + strlen(title[0]), "%s", attributes[i].name);
+		if (i != num - 1)
+			sprintf(title[0] + strlen(title[0]), ", ");
+		else
+			sprintf(title[0] + strlen(title[0]), ")");
+
+		sprintf(title[1] + strlen(title[1]), "%*u",
+				strlen(attributes[i].name) + 2, attributes[i].value);
 	}
 
-	free(str);
+	sprintf(title[0] + strlen(title[0]), "%-*s, %s-form",
+			73 - strlen(title[0]), desc, form);
+
+	sprintf(title[1] + strlen(title[1]), "%-*s %u", 77 - strlen(title[1]),
+			"Page", page);
+
+	printf("\n\n%s\n%s\n", title[0], title[1]);
+	print_bar('-');
+	printf("\n");
 }
 
 void show_table() {
