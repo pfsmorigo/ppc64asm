@@ -72,8 +72,8 @@ void instruction_info_real(uint8_t *name, uint8_t *desc, uint8_t *form,
 	uint8_t *ch;
 	uint8_t *str;
 	int8_t i, num;
-	uint8_t title[2][100];
-	struct attribute attributes[10];
+	uint8_t title[4][64];
+	struct attribute attributes[8];
 	va_list values;
 
 	str = strdup(attr);
@@ -90,28 +90,26 @@ void instruction_info_real(uint8_t *name, uint8_t *desc, uint8_t *form,
 	va_end(values);
 	free(str);
 
-	sprintf(title[0], "\n%s(", name);
+	sprintf(title[0], "%s(", name);
 	sprintf(title[1], "%*s", strlen(name) - 1, " ");
 
 	for  (i = 0; i < num; i++)
 	{
 		sprintf(title[0] + strlen(title[0]), "%s", attributes[i].name);
-		if (i != num - 1)
+		if (i < num - 1)
 			sprintf(title[0] + strlen(title[0]), ", ");
-		else
-			sprintf(title[0] + strlen(title[0]), ")");
 
 		sprintf(title[1] + strlen(title[1]), "%*u",
 				strlen(attributes[i].name) + 2, attributes[i].value);
 	}
 
-	sprintf(title[0] + strlen(title[0]), "%-*s, %s-form",
-			73 - strlen(title[0]), desc, form);
+	sprintf(title[0] + strlen(title[0]), ")");
+	sprintf(title[2], "%s, %s-form",  desc, form);
+	sprintf(title[3], "Page %u", page);
 
-	sprintf(title[1] + strlen(title[1]), "%-*s %u", 77 - strlen(title[1]),
-			"Page", page);
-
-	printf("\n\n%s\n%s\n", title[0], title[1]);
+	printf("\n\n");
+	printf("%-30s%50s\n", title[0], title[2]);
+	printf("%-30s%50s\n", title[1], title[3]);
 	print_bar('-');
 	printf("\n");
 }
